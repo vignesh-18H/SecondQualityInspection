@@ -1,0 +1,117 @@
+<mvc:View
+    controllerName="com.sap.dmc.secondquality.controller.secondquality"
+	xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:t="sap.ui.table"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:dnd="sap.ui.core.dnd"
+    >
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+                	<customHeader>
+					<Bar id="Bar">
+                    <contentLeft>
+                    <Text id="Textnew" class="headerFormat" text="{i18n>title}"/>
+                    </contentLeft>
+                    <contentRight>
+					<Button id="refresh" visible="true" press="handleInput" icon="sap-icon://refresh"/>
+					<Button id="hide" tooltip="Hide Filters" visible="true" press="fnHide" icon="sap-icon://hide" enabled="true"/>
+					<Button id="show" tooltip="Show Filters" visible="false" press="fnShow" icon="sap-icon://show" enabled="true"/>
+					<Button id="edit" press="loadSFCData" tooltip="Edit" icon="sap-icon://edit"/>
+                    </contentRight>
+                    	</Bar>
+				</customHeader>
+					<f:SimpleForm id="input_ID" width="1200px" minWidth="1024" maxContainerCols="3" editable="true" layout="ResponsiveGridLayout" 
+					labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2" class="editableForm">
+						<l:VerticalLayout id="layout1" class="sapUiTinyMarginTop">
+							<Label id="label" text="{i18n>WorkCenter}" design="Bold"/>
+							<MultiComboBox id="combo" selectedKeys="{inputModel>/WORK_CENTER}" selectionFinish="handleInput" 
+									items="{ path : 'workCenterModel>/WorkCenters'}">
+								<core:Item id="core" key="{workCenterModel>WORK_CENTER}" text="{workCenterModel>WORK_CENTER} -- {workCenterModel>DESCRIPTION}"/>
+							</MultiComboBox>
+						</l:VerticalLayout>
+						<l:VerticalLayout id="layout2" class="sapUiTinyMarginTop">
+							<Label id="label2" text="{i18n>Pallet Status}" design="Bold"/>
+								<MultiComboBox id="combo2" selectedKeys="{inputModel>/PALLET_STATUS}" selectionFinish="handleInput"  
+									items="{ path : 'palletStatusModel>/PalletStatus'}">
+								<core:Item id="core2" key="{palletStatusModel>PALLET_STATUS}" text="{palletStatusModel>PALLET_STATUS}"/>
+								</MultiComboBox>
+						</l:VerticalLayout>
+                        <l:VerticalLayout id="layout3" class="sapUiTinyMarginTop">
+                        	<Label id="label3" text="{i18n>shopOrder}" design="Bold"/>
+                            	<SearchField id="orderInput" liveChange=".orderSearch"></SearchField>
+                        </l:VerticalLayout>
+                          <l:VerticalLayout id="layout4" class="sapUiTinyMarginTop">
+                          	<Label id="label4" text="{i18n>Pallet}" design="Bold"/>
+                              	<SearchField id="palletInput" liveChange=".palletSearch"></SearchField>
+                        </l:VerticalLayout>
+					</f:SimpleForm>
+                    	<t:Table  id="orderTable" rows="{orderList>/Panel}" selectionMode="None" enableSelectAll="true" visible="true" editable="true" visibleRowCount="{headerModel>/VisibleRow}" alternateRowColors="true">
+						<t:columns>
+	                 <t:Column id="Coloumn1" width="3.5rem">
+								<t:template>
+									<RadioButton id="radio1" selected="{orderList>Selected}" valueState="{ path: 'orderList>Selected', formatter: '.formatter.getStatus' }" enabled="{ path: 'orderList>CAMS_STATUS', formatter: '.formatter.formatStatus' }"/>
+								</t:template>   
+							</t:Column>
+                            	<t:Column id="Column2"  width="8rem">
+								<Label id="labelPallet" design="Bold" text="{i18n>label.pallet}"/>
+								<t:template>
+									<Text id="text" text="{orderList>SFC}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+								<t:Column id="column2" width="8rem">
+								<Label id="labelpalletstatus" design="Bold" text="{i18n>label.palletStatus}"/>
+								<t:template>
+									<Text id="text2" text="{orderList>PALLET_STATUS}"/>
+								</t:template>
+							</t:Column>
+                            	<t:Column id="coloumn3"  width="10rem">
+								<Label id="labelProddate" design="Bold" text="{i18n>label.prodDate}"/>
+								<t:template>
+									<Text id="text3" text="{orderList>PROD_DATE}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column id="coloumn4"  width="10rem">
+								<Label id="labelProdtime" design="Bold" text="{i18n>label.prodTime}"/>
+								<t:template>
+									<Text id="text4" text="{orderList>PROD_TIME}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+                            	<t:Column id="coloumn5"  width="10rem">
+								<Label id="s4status" design="Bold" text="{i18n>label.s4Status}"/>
+								<t:template>
+                                	<ObjectStatus id="status" text="{orderList>S4_STATUS}" state="{path :'orderList>S4_STATUS', formatter: '.formatter.StatusFormatter' }" />
+								
+								</t:template>
+							</t:Column>
+                            	<t:Column id="coloumn6" width="10rem">
+								<Label id="camsstatus" design="Bold" text="{i18n>label.camsStatus}"/>
+								<t:template>
+											<ObjectStatus id="status1" text="{orderList>STATUS}" state="{path :'orderList>STATUS', formatter: '.formatter.StatusFormatterCAMS' }" />
+								</t:template>
+							</t:Column>
+                            	<t:Column id="coloumn7" width="10rem" >
+								<Label id="item" design="Bold" text="{i18n>label.item}"/>
+								<t:template>
+									<Text id="text5" text="{orderList>ITEM}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+							<t:Column id="coloumn8" width="8rem" >
+								<Label id="shopOrder" design="Bold" text="{i18n>label.shopOrder}"/>
+								<t:template>
+									<Text id="text6" text="{orderList>SHOP_ORDER}" wrapping="false"/>
+								</t:template>
+							</t:Column>
+                        	</t:columns>
+                    	</t:Table>
+                        <content />
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

@@ -1,0 +1,45 @@
+<core:FragmentDefinition xmlns:mvc="sap.ui.core.mvc" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" displayBlock="true" xmlns="sap.m" xmlns:t="sap.ui.table">
+		<Dialog id="openDialog" title="Edit Pallet Details" contentWidth="1000px" contentHeight="350px">
+			<content>
+            	<f:SimpleForm id="form"  minWidth="1024" maxContainerCols="3" editable="true" layout="ResponsiveGridLayout" labelSpanL="5" labelSpanM="5"
+				emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2" class="editableForm">
+				<core:Title id="core" text="Production Parameters" level="H4"/>
+	<Label id="labelGrade" text="{i18n>label.grade}" required="true" design="Bold"/>
+				<Select  id="select1" width="250px" selectedKey="{editDcDataModel>/GRADE}" items="{ path: 'gradeModel>/Grades'}" enabled="true" forceSelection="false"
+					change="fnHighLight" showSecondaryValues="true">
+					<core:ListItem id="core2" key="{gradeModel>DATA_VALUE}" text="{gradeModel>DATA_VALUE}" additionalText="{gradeModel>DATA_TAG}"/>
+				</Select>
+				<Label id="labelreasoncode" text="{i18n>label.reasonCode}" design="Bold" required="{editDcDataModel>/REASON_REQ}"/>
+				<Select id="select2" valueState="{editDcDataModel>/REASON_HL}" width="250px" selectedKey="{editDcDataModel>/ZR_REASON_CODE}"
+					items="{ path: 'reasonModel>/ReasonCodes'}" forceSelection="false" showSecondaryValues="true" valueStateText="Reason Code">
+					<core:ListItem id="core3" key="{reasonModel>NC_CODE}" text="{reasonModel>NC_CODE}" additionalText="{reasonModel>DESCRIPTION}"/>
+				</Select>
+                <Label id="labelcomments" text="{i18n>label.comments}" design="Bold"/>
+				<TextArea id="comment"  value="{editDcDataModel>/COMMENT}" width="250px" height="100px"/>
+				<core:Title  id="core4" text="End of Line Quality Check" level="H4"/>
+				<Label id="labelPCBox" text="{i18n>label.pcBox}" required="true" design="Bold"/>
+				<Input id="input1"  value="{editDcDataModel>/BOX}" width="250px" change="fnCheckPc"/>
+				<Label id="boxtype" text="{i18n>label.boxType}" required="true" design="Bold"/>
+				<Input id="input2" value="{editDcDataModel>/TYPE_OF_BOX}" width="250px"/>
+				<Label id="labelbarcode" text="{i18n>label.barcodeRead}" required="true" design="Bold"/>
+				<Select id="select4" width="250px" selectedKey="{editDcDataModel>/BARCODE_READABLE}" items="{ path: 'yesNoModel>/YesNo'}" forceSelection="false">
+					<core:ListItem id="core5" key="{yesNoModel>stateId}" text="{yesNoModel>Name}"/>
+				</Select>
+
+                	<Label id="labelBatch" text="{i18n>label.batchCorrect}" required="true" design="Bold"/>
+				<Select id="select5" width="250px" selectedKey="{editDcDataModel>/BATCH_CORRECT}" items="{ path: 'yesNoModel>/YesNo'}" forceSelection="false">
+					<core:ListItem id="core6" key="{yesNoModel>stateId}" text="{yesNoModel>Name}"/>
+				</Select>
+				<Label id="labelnotdamage" text="{i18n>label.boxNotDamage}" required="true" design="Bold"/>
+				<Select id="select6" width="250px" selectedKey="{editDcDataModel>/BOX_NOT_DAMAGED}" items="{ path: 'yesNoModel>/YesNo'}" forceSelection="false">
+					<core:ListItem id="core7" key="{yesNoModel>stateId}" text="{yesNoModel>Name}"/>
+				</Select>
+                	</f:SimpleForm>
+            	</content>		
+		<buttons>
+			<Button id="Button1" text="Update CAMS"  press="fnUpdateQuality"/>
+			<Button id="Button2" text="Cancel" press="fnClose"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
